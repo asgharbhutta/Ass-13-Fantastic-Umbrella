@@ -38,7 +38,7 @@ router.get('/:id', (req, res) => {
   .then((products) => res.json(products))
   .catch((err) => {
     console.log(err);
-    res.status(500).json(err)
+    res.status(400).json(err)
   });
 });
 
@@ -53,7 +53,7 @@ router.post('/', (req, res) => {
     }
   */
   Product.create(req.body)
-    .then((product) => {
+    .then((products) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
@@ -82,7 +82,7 @@ router.put('/:id', (req, res) => {
       id: req.params.id,
     },
   })
-    .then((product) => {
+    .then((products) => {
       // find all associated tags from ProductTag
       return ProductTag.findAll({ where: { product_id: req.params.id } });
     })
